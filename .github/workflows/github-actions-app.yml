@@ -3,7 +3,6 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: node:10.18-jessie
     services:
       postgres:
         image: postgres
@@ -29,5 +28,5 @@ jobs:
       - name: Run tests
         run: bundle exec rspec
         env:
-          DATABASE_URL: postgres://test:runner@postgres:5432/postgres
+          DATABASE_URL: postgres://test:runner@localhost:5432/postgres
           RACK_ENV: test

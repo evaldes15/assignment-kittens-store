@@ -25,6 +25,10 @@ jobs:
           ruby-version: '2.4.9'
       - name: Install dependencies
         run: bundle install
+      - name: Init database
+        run: bundle exec rake db:create
+      - run: bundle exec rake db:migrate
+      - run: bundle exec rake db:seed
       - name: Run tests
         run: bundle exec rspec
         env:

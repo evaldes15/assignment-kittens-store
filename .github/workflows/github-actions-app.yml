@@ -3,9 +3,10 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: node:10.18-jessie
     services:
       postgres:
-        image: postgres:latest
+        image: postgres
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: runner

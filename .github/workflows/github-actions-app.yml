@@ -3,10 +3,6 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    container:
-      image:  node:16-bullseye
-
     services:
       postgres:
         image: postgres:latest

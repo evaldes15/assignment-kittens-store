@@ -26,9 +26,13 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Init database
-        run: bundle exec rake db:create
-      - run: bundle exec rake db:migrate
-      - run: bundle exec rake db:seed
+        run: | 
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rake db:seed
+        env:
+          DATABASE_URL: postgres://test:runner@localhost:5432/postgres
+          RACK_ENV: test
       - name: Run tests
         run: bundle exec rspec
         env:

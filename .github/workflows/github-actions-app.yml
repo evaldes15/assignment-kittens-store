@@ -39,6 +39,7 @@ jobs:
           DATABASE_URL: postgres://test:runner@localhost:5432/postgres
           RACK_ENV: test
   build-push-application:
+    needs: test-application
     runs-on: ubuntu-latest
     steps:
       - name: Check out code

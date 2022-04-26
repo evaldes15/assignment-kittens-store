@@ -1,0 +1,11 @@
+apiVersion: v2
+name: kittens_store
+description: Starter for kittens_store service
+version: 0.1.0
+appVersion: "1.16.0"
+type: application
+maintainers:
+  - name: Edgar
+    email: edgar.alan.valdes@gmail.com
+keywords:
+  - KITTENS-APP

@@ -1,0 +1,64 @@
+##################################################################################################
+# Deployment section
+##################################################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+  namespace: {{ .Values.deployment.app.namespace }}
+  labels:
+    app: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+        image: {{ .Values.deployment.app.image }}
+        ports:
+        - containerPort: {{ .Values.deployment.app.containerPort }}
+          name: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+        env:
+        - name: POSTGRES_HOST
+          value: {{ .Values.deployment.db.host }}
+        - name: POSTGRES_USER
+          value: {{ .Values.deployment.db.user }}
+        - name: POSTGRES_PASSWORD
+          value: {{ .Values.deployment.db.password }}
+        - name: POSTGRES_DB
+          value: {{ .Values.deployment.db.database }}
+      - name: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}_db
+        image: {{ .Values.deployment.db.image }}
+        ports:
+        - containerPort: {{ .Values.deployment.db.containerPort }}
+          name: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+        env:
+        - name: DATABASE_URL
+          value: {{ .Values.deployment.app.database_url }}
+        - name: RACK_ENV
+          value: {{ .Values.deployment.app.env }}
+---
+##################################################################################################
+## Service                                                                          ##
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+    name: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+    namespace: {{ .Values.deployment.app.namespace }}
+    labels:
+        app: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+spec:
+    type: LoadBalancer
+    selector:
+        app: {{ .Values.deployment.app.name }}-{{ .Values.deployment.app.id }}
+    ports:
+    - port: {{ .Values.service.port }}
+      protocol: {{ .Values.service.protocol }}  
+      targetPort: {{ .Values.service.targetPort }}

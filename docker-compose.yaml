@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    hostname: db
+    image: postgres
+    ports:
+      - "54321:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=supersecretpassword
+      - POSTGRES_DB=kittens_store_test
+  app:
+    image: 'kittens-store:latest'
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://test:supersecretpassword@db:5432/kittens_store_test
+      - RACK_ENV=test
+    ports:
+      - '4567:4567'
+    depends_on:
+      - db

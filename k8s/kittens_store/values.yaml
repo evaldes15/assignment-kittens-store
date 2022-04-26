@@ -1,0 +1,23 @@
+deployment:
+  replicas: 1
+  db:
+    host: db
+    user: test
+    password: ""
+    database: kittens_store_test
+    image: "postgress"
+    containerPort: 54321
+  app:
+    database_url: ""
+    env: test 
+    namespace: kittens
+    name: kittens_app
+    id: ""
+    image: "1234.dkr.ecr.us-east-1.amazonaws.com/kittens_app"
+    pullPolicy: Always
+    containerPort: 4567
+    
+service:
+  protocol: TCP
+  targetPort: 4567
+  port: 80
